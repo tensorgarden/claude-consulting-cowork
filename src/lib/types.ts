@@ -49,6 +49,26 @@ export interface ConsultingActivity {
   type: "discovery" | "configuration" | "approval" | "handoff" | "alert";
 }
 
+export type ReadinessGateStatus = "passed" | "in_progress" | "blocked" | "not_started";
+
+export type ReadinessGateCategory =
+  | "data_quality"
+  | "security"
+  | "integration"
+  | "governance"
+  | "team_training"
+  | "scope_discipline";
+
+export interface ReadinessGate {
+  id: string;
+  clientId: string;
+  category: ReadinessGateCategory;
+  name: string;
+  status: ReadinessGateStatus;
+  detail: string;
+  blockedBy?: string;
+}
+
 export interface HeroMetric {
   label: string;
   value: string;

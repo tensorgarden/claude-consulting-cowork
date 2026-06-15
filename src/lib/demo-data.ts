@@ -1,4 +1,4 @@
-import type { AutomationPlaybook, ClaudeCoworkClient, ConsultingActivity, HeroMetric, IntegrationHealth } from "./types";
+import type { AutomationPlaybook, ClaudeCoworkClient, ConsultingActivity, HeroMetric, IntegrationHealth, ReadinessGate } from "./types";
 
 export const clients: ClaudeCoworkClient[] = [
   {
@@ -140,6 +140,72 @@ export const activities: ConsultingActivity[] = [
   { id: "act-006", clientId: "greenhouse-pro", timestamp: "2026-02-14T14:10:00Z", title: "Closeout packet workflow mapped", detail: "As-built photos, warranty docs, punch items, and JobTread records now resolve into one review queue.", type: "discovery" },
   { id: "act-007", clientId: "summit-restoration", timestamp: "2026-02-14T15:00:00Z", title: "Claim email guardrail added", detail: "External claim updates now require human approval when dollar amounts or legal terms appear.", type: "configuration" },
   { id: "act-008", clientId: "atlas-siteworks", timestamp: "2026-02-14T16:25:00Z", title: "Proposal cowork kickoff", detail: "Landscape proposal context template created for intake, scope, exclusions, and follow-up tasks.", type: "discovery" }
+];
+
+export const readinessGates: ReadinessGate[] = [
+  // --- meridian-builders (healthy) ---
+  { id: "rg-001", clientId: "meridian-builders", category: "data_quality", name: "Cost code normalization", status: "passed", detail: "All cost codes mapped to QuickBooks chart of accounts with confirmed format." },
+  { id: "rg-002", clientId: "meridian-builders", category: "security", name: "Financial action guardrails", status: "passed", detail: "Invoice creation and vendor setup gated behind human approval." },
+  { id: "rg-003", clientId: "meridian-builders", category: "integration", name: "JobTread MCP read access", status: "passed", detail: "Read-only context retrieval validated with estimator sign-off." },
+  { id: "rg-004", clientId: "meridian-builders", category: "governance", name: "Approval escalation path", status: "passed", detail: "PM → ops director escalation documented for blocked actions." },
+  { id: "rg-005", clientId: "meridian-builders", category: "team_training", name: "Estimator cowork onboarding", status: "passed", detail: "Three estimators completed prompt library and escalation rules session." },
+  { id: "rg-006", clientId: "meridian-builders", category: "scope_discipline", name: "Written exclusion list", status: "passed", detail: "Out-of-scope: vendor negotiation, lien waiver generation, certified payroll." },
+
+  // --- shoreline-renovation (watch) ---
+  { id: "rg-007", clientId: "shoreline-renovation", category: "data_quality", name: "Cost code drift remediation", status: "in_progress", detail: "Mismatched cost codes flagged by Claude cowork; normalization in progress." },
+  { id: "rg-008", clientId: "shoreline-renovation", category: "security", name: "Change order publish gate", status: "passed", detail: "Change order publishing requires PM approval before JobTread write." },
+  { id: "rg-009", clientId: "shoreline-renovation", category: "integration", name: "JobTread change-order context", status: "passed", detail: "Scope-change data flows into cowork workspace for prep." },
+  { id: "rg-010", clientId: "shoreline-renovation", category: "governance", name: "Invoice automation approval chain", status: "in_progress", detail: "Draft approval path defined but not yet tested with accounting sign-off." },
+  { id: "rg-011", clientId: "shoreline-renovation", category: "team_training", name: "PM cowork training", status: "passed", detail: "Two PMs completed change-order cowork walkthrough." },
+  { id: "rg-012", clientId: "shoreline-renovation", category: "scope_discipline", name: "Invoice automation scope boundary", status: "passed", detail: "Out-of-scope: payment scheduling, lien release, subcontractor compliance." },
+
+  // --- northstar-field (launching) ---
+  { id: "rg-013", clientId: "northstar-field", category: "data_quality", name: "Dispatch board field audit", status: "in_progress", detail: "Completeness audit on Airtable dispatch records; 12% missing required fields." },
+  { id: "rg-014", clientId: "northstar-field", category: "security", name: "HubSpot message send gate", status: "passed", detail: "External client messages gated behind human approval." },
+  { id: "rg-015", clientId: "northstar-field", category: "integration", name: "Airtable dispatch enrichment", status: "passed", detail: "Read-write connection validated with supervisor confirmation." },
+  { id: "rg-016", clientId: "northstar-field", category: "governance", name: "Supervised dispatch trial", status: "in_progress", detail: "Two-week supervised run with citation links before unsupervised promotion." },
+  { id: "rg-017", clientId: "northstar-field", category: "team_training", name: "Supervisor cowork onboarding", status: "in_progress", detail: "Three supervisors scheduled; one session completed." },
+  { id: "rg-018", clientId: "northstar-field", category: "scope_discipline", name: "Dispatch scope boundary", status: "passed", detail: "Out-of-scope: technician scheduling, parts ordering, overtime approval." },
+
+  // --- oakline-homes (healthy) ---
+  { id: "rg-019", clientId: "oakline-homes", category: "data_quality", name: "Meeting calendar hygiene", status: "passed", detail: "Calendar events have project tags and attendees for brief generation." },
+  { id: "rg-020", clientId: "oakline-homes", category: "security", name: "External sharing gate", status: "passed", detail: "Google Workspace external sharing requires PM review." },
+  { id: "rg-021", clientId: "oakline-homes", category: "integration", name: "Google Workspace cowork", status: "passed", detail: "Meeting notes and owner briefs generated from calendar and docs." },
+  { id: "rg-022", clientId: "oakline-homes", category: "governance", name: "Owner brief review cadence", status: "passed", detail: "Weekly brief review with PM before client distribution." },
+  { id: "rg-023", clientId: "oakline-homes", category: "team_training", name: "PM meeting brief training", status: "passed", detail: "All PMs completed Claude cowork meeting brief walkthrough." },
+  { id: "rg-024", clientId: "oakline-homes", category: "scope_discipline", name: "Meeting brief scope boundary", status: "passed", detail: "Out-of-scope: design decisions, contract amendments, pricing recommendations." },
+
+  // --- copper-canyon (blocked) ---
+  { id: "rg-025", clientId: "copper-canyon", category: "data_quality", name: "Bill categorization audit", status: "not_started", detail: "Vendor bill categories need normalization before reconciliation automation.", blockedBy: "Awaiting accounting team availability" },
+  { id: "rg-026", clientId: "copper-canyon", category: "security", name: "Sandbox account permissions", status: "blocked", detail: "QuickBooks sandbox lacks purchasing module access; financial write actions disabled.", blockedBy: "QuickBooks admin permission gap — ticket open with client IT" },
+  { id: "rg-027", clientId: "copper-canyon", category: "integration", name: "Slack approval alerts", status: "passed", detail: "Approval notifications flowing to project channel." },
+  { id: "rg-028", clientId: "copper-canyon", category: "governance", name: "Bill approval chain", status: "in_progress", detail: "Draft approval chain documented but blocked on sandbox resolution." },
+  { id: "rg-029", clientId: "copper-canyon", category: "team_training", name: "Accounting cowork onboarding", status: "not_started", detail: "On hold until sandbox permissions resolved.", blockedBy: "Depends on security gate rg-026" },
+  { id: "rg-030", clientId: "copper-canyon", category: "scope_discipline", name: "Bill reconciliation scope boundary", status: "passed", detail: "Out-of-scope: payment execution, vendor negotiation, tax classification." },
+
+  // --- greenhouse-pro (healthy) ---
+  { id: "rg-031", clientId: "greenhouse-pro", category: "data_quality", name: "Closeout document completeness", status: "passed", detail: "Warranty docs, as-built photos, and punch items validated for packet generation." },
+  { id: "rg-032", clientId: "greenhouse-pro", category: "security", name: "Document finalization gate", status: "passed", detail: "Closeout packet finalization requires PM sign-off." },
+  { id: "rg-033", clientId: "greenhouse-pro", category: "integration", name: "JobTread closeout source", status: "passed", detail: "JobTread records resolve into single review queue." },
+  { id: "rg-034", clientId: "greenhouse-pro", category: "governance", name: "Team pilot review cadence", status: "passed", detail: "Biweekly review of generated packets before promotion to standard workflow." },
+  { id: "rg-035", clientId: "greenhouse-pro", category: "team_training", name: "Team pilot onboarding", status: "passed", detail: "Closeout packet generator promoted to team pilot with training complete." },
+  { id: "rg-036", clientId: "greenhouse-pro", category: "scope_discipline", name: "Closeout scope boundary", status: "passed", detail: "Out-of-scope: warranty claim processing, lien waiver tracking, owner walkthrough scheduling." },
+
+  // --- summit-restoration (watch) ---
+  { id: "rg-037", clientId: "summit-restoration", category: "data_quality", name: "Claim timeline data audit", status: "passed", detail: "HubSpot claim communication timeline validated for supplement automation." },
+  { id: "rg-038", clientId: "summit-restoration", category: "security", name: "Supplement email guardrail", status: "passed", detail: "External claim updates with dollar amounts or legal terms require human approval." },
+  { id: "rg-039", clientId: "summit-restoration", category: "integration", name: "HubSpot claim timeline", status: "in_progress", detail: "Carrier update sync lag under investigation; 88-minute drift flagged." },
+  { id: "rg-040", clientId: "summit-restoration", category: "governance", name: "Supplement approval chain", status: "passed", detail: "Adjuster → PM escalation path documented and tested." },
+  { id: "rg-041", clientId: "summit-restoration", category: "team_training", name: "Adjuster cowork training", status: "in_progress", detail: "Two adjusters trained; third session scheduled." },
+  { id: "rg-042", clientId: "summit-restoration", category: "scope_discipline", name: "Supplement scope boundary", status: "passed", detail: "Out-of-scope: coverage determination, estimate negotiation, carrier dispute." },
+
+  // --- atlas-siteworks (launching) ---
+  { id: "rg-043", clientId: "atlas-siteworks", category: "data_quality", name: "Proposal template audit", status: "in_progress", detail: "Landscape proposal templates being validated for intake, scope, and exclusions fields." },
+  { id: "rg-044", clientId: "atlas-siteworks", category: "security", name: "Proposal export gate", status: "passed", detail: "Proposal export to client requires PM approval." },
+  { id: "rg-045", clientId: "atlas-siteworks", category: "integration", name: "HubSpot lead qualification", status: "in_progress", detail: "Lead qualification trigger mapped; proposal context pack generation being tested." },
+  { id: "rg-046", clientId: "atlas-siteworks", category: "governance", name: "Proposal review cadence", status: "not_started", detail: "Weekly review cadence not yet established with PM team." },
+  { id: "rg-047", clientId: "atlas-siteworks", category: "team_training", name: "PM proposal cowork onboarding", status: "not_started", detail: "Training session scheduled for next week." },
+  { id: "rg-048", clientId: "atlas-siteworks", category: "scope_discipline", name: "Proposal scope boundary", status: "passed", detail: "Out-of-scope: pricing strategy, design decisions, material takeoffs." },
 ];
 
 export const heroMetrics: HeroMetric[] = [

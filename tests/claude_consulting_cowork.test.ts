@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { activities, averageConfidence, clients, failingIntegrationCount, healthyClientCount, heroMetrics, integrations, playbooks } from "../src/lib/demo-data";
+import { activities, averageConfidence, clients, failingIntegrationCount, healthyClientCount, heroMetrics, integrations, playbooks, readinessGates } from "../src/lib/demo-data";
 
 describe("claude consulting cowork demo data", () => {
   it("contains eight fictional consulting clients", () => {
@@ -66,5 +66,59 @@ describe("claude consulting cowork demo data", () => {
 
   it("counts healthy clients from the source collection", () => {
     expect(healthyClientCount).toBe(clients.filter((client) => client.status === "healthy").length);
+  });
+});
+
+describe("readiness gates", () => {
+  it("assigns six readiness categories per client", () => {
+    const clientIds = new Set(clients.map((c) => c.id));
+    const categories = new Set(readinessGates.map((g) => g.category));
+    expect(categories.size).toBe(6);
+    for (const clientId of clientIds) {
+      expect(readinessGates.filter((g) => g.clientId === clientId)).toHaveLength(6);
+    }
+  });
+
+  it("references only known clients", () => {
+    const clientIds = new Set(clients.map((c) => c.id));
+    expect(readinessGates.every((g) => clientIds.has(g.clientId))).toBe(true);
+  });
+
+  it("has unique gate ids", () => {
+    expect(new Set(readinessGates.map((g) => g.id)).size).toBe(readinessGates.length);
+  });
+
+  it("has all gates passed for healthy clients", () => {
+    const healthyClientIds = clients
+      .filter((c) => c.status === "healthy")
+      .map((c) => c.id);
+    for (const clientId of healthyClientIds) {
+      const gates = readinessGates.filter((g) => g.clientId === clientId);
+      expect(gates.every((g) => g.status === "passed")).toBe(true);
+    }
+  });
+
+  it("includes blocked gates for the blocked client", () => {
+    const blockedClientIds = clients
+      .filter((c) => c.status === "blocked")
+      .map((c) => c.id);
+    expect(blockedClientIds.length).toBeGreaterThan(0);
+    for (const clientId of blockedClientIds) {
+      const gates = readinessGates.filter((g) => g.clientId === clientId);
+      expect(gates.some((g) => g.status === "blocked")).toBe(true);
+    }
+  });
+
+  it("explains why every blocked gate is stuck", () => {
+    const blockedGates = readinessGates.filter((g) => g.status === "blocked");
+    expect(blockedGates.length).toBeGreaterThan(0);
+    expect(blockedGates.every((g) => g.blockedBy && g.blockedBy.length > 0)).toBe(true);
+  });
+
+  it("uses valid status and category values", () => {
+    const validStatuses = ["passed", "in_progress", "blocked", "not_started"];
+    const validCategories = ["data_quality", "security", "integration", "governance", "team_training", "scope_discipline"];
+    expect(readinessGates.every((g) => validStatuses.includes(g.status))).toBe(true);
+    expect(readinessGates.every((g) => validCategories.includes(g.category))).toBe(true);
   });
 });
