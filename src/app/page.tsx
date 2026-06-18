@@ -1,4 +1,4 @@
-import { activities, averageConfidence, clients, failingIntegrationCount, healthyClientCount, heroMetrics, integrations, playbooks } from "@/lib/demo-data";
+import { activities, averageConfidence, clients, failingIntegrationCount, healthyClientCount, heroMetrics, integrations, playbooks, readinessGates } from "@/lib/demo-data";
 import type { AutomationRisk, IntegrationStatus, WorkspaceStatus } from "@/lib/types";
 
 function Badge({ children, tone = "slate" }: { children: React.ReactNode; tone?: "emerald" | "amber" | "rose" | "sky" | "violet" | "slate" }) {
@@ -72,6 +72,16 @@ export default function Home() {
   const totalHoursSaved = clients.reduce((sum, client) => sum + client.hoursSaved, 0);
   const humanGatedRate = Math.round((playbooks.filter((playbook) => playbook.humanApproval).length / playbooks.length) * 100);
   const avgPlaybookSuccess = Math.round(playbooks.reduce((sum, playbook) => sum + playbook.successRate, 0) / playbooks.length);
+  const readinessByClient = new Map(
+    clients.map((client) => {
+      const gates = readinessGates.filter((gate) => gate.clientId === client.id);
+      const passed = gates.filter((gate) => gate.status === "passed").length;
+      const blocked = gates.filter((gate) => gate.status === "blocked").length;
+      const unresolved = gates.length - passed;
+
+      return [client.id, { blocked, passed, total: gates.length, unresolved }];
+    })
+  );
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
@@ -107,7 +117,7 @@ export default function Home() {
               <Badge tone="emerald">{totalHoursSaved} monthly hours saved</Badge>
             </div>
             <div className="mt-6 overflow-x-auto">
-              <table className="w-full min-w-[900px] border-separate border-spacing-y-3 text-left text-sm">
+              <table className="w-full min-w-[1050px] border-separate border-spacing-y-3 text-left text-sm">
                 <thead className="text-xs uppercase tracking-[0.2em] text-slate-500">
                   <tr>
                     <th className="px-4 py-2">Client</th>
@@ -115,25 +125,38 @@ export default function Home() {
                     <th className="px-4 py-2">Stack</th>
                     <th className="px-4 py-2">Status</th>
                     <th className="px-4 py-2">Confidence</th>
+                    <th className="px-4 py-2">Readiness gates</th>
                     <th className="px-4 py-2">Next milestone</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {clients.map((client) => (
-                    <tr key={client.id} className="rounded-2xl bg-slate-900/70 text-slate-200">
-                      <td className="rounded-l-2xl px-4 py-4">
-                        <p className="font-semibold text-white">{client.company}</p>
-                        <p className="text-xs text-slate-400">{client.industry} · {client.owner}</p>
-                      </td>
-                      <td className="px-4 py-4">{client.engagement}</td>
-                      <td className="px-4 py-4">
-                        <div className="flex flex-wrap gap-2">{client.stack.slice(0, 3).map((item) => <Badge key={item}>{item}</Badge>)}</div>
-                      </td>
-                      <td className="px-4 py-4"><Badge tone={statusTone[client.status]}><span className="mr-2"><StatusDot status={client.status} /></span>{client.status}</Badge></td>
-                      <td className="px-4 py-4"><div className="w-32"><ProgressBar value={client.confidenceScore} tone={client.confidenceScore > 90 ? "emerald" : "amber"} /></div><p className="mt-1 text-xs text-slate-400">{client.confidenceScore}%</p></td>
-                      <td className="rounded-r-2xl px-4 py-4 text-slate-300">{client.nextMilestone}</td>
-                    </tr>
-                  ))}
+                  {clients.map((client) => {
+                    const readiness = readinessByClient.get(client.id) ?? { blocked: 0, passed: 0, total: 0, unresolved: 0 };
+                    const readinessTone = readiness.blocked > 0 ? "rose" : readiness.unresolved > 0 ? "amber" : "emerald";
+                    const readinessDetail = readiness.blocked > 0 ? `${readiness.blocked} blocked` : readiness.unresolved > 0 ? `${readiness.unresolved} in review` : "Production ready";
+
+                    return (
+                      <tr key={client.id} className="rounded-2xl bg-slate-900/70 text-slate-200">
+                        <td className="rounded-l-2xl px-4 py-4">
+                          <p className="font-semibold text-white">{client.company}</p>
+                          <p className="text-xs text-slate-400">{client.industry} · {client.owner}</p>
+                        </td>
+                        <td className="px-4 py-4">{client.engagement}</td>
+                        <td className="px-4 py-4">
+                          <div className="flex flex-wrap gap-2">{client.stack.slice(0, 3).map((item) => <Badge key={item}>{item}</Badge>)}</div>
+                        </td>
+                        <td className="px-4 py-4"><Badge tone={statusTone[client.status]}><span className="mr-2"><StatusDot status={client.status} /></span>{client.status}</Badge></td>
+                        <td className="px-4 py-4"><div className="w-32"><ProgressBar value={client.confidenceScore} tone={client.confidenceScore > 90 ? "emerald" : "amber"} /></div><p className="mt-1 text-xs text-slate-400">{client.confidenceScore}%</p></td>
+                        <td className="px-4 py-4">
+                          <div className="w-36">
+                            <ProgressBar value={readiness.total > 0 ? (readiness.passed / readiness.total) * 100 : 0} tone={readinessTone} />
+                          </div>
+                          <p className="mt-1 text-xs text-slate-400">{readiness.passed}/{readiness.total} gates passed · {readinessDetail}</p>
+                        </td>
+                        <td className="rounded-r-2xl px-4 py-4 text-slate-300">{client.nextMilestone}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
