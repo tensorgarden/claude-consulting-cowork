@@ -53,6 +53,16 @@ describe("claude consulting cowork demo data", () => {
     expect(playbooks.every((playbook) => playbook.successRate >= 60 && playbook.successRate <= 100)).toBe(true);
   });
 
+  it("surfaces governance evidence and review SLAs for every playbook", () => {
+    expect(playbooks.every((playbook) => playbook.governanceEvidence.length > 20)).toBe(true);
+    expect(playbooks.every((playbook) => playbook.reviewSlaHours > 0 && playbook.reviewSlaHours <= 24)).toBe(true);
+  });
+
+  it("keeps high-risk playbooks on same-day review SLAs", () => {
+    const highRiskPlaybooks = playbooks.filter((playbook) => playbook.risk === "high");
+    expect(highRiskPlaybooks.every((playbook) => playbook.humanApproval && playbook.reviewSlaHours <= 4)).toBe(true);
+  });
+
   it("provides a consulting activity stream", () => {
     expect(activities).toHaveLength(8);
     expect(activities.some((activity) => activity.type === "alert")).toBe(true);

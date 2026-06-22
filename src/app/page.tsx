@@ -233,6 +233,9 @@ export default function Home() {
                   <StatusDot status={playbook.risk} />
                 </div>
                 <p className="mt-3 text-sm leading-6 text-slate-300">{playbook.trigger}</p>
+                <p className="mt-3 rounded-xl border border-white/10 bg-slate-950/60 p-3 text-xs leading-5 text-slate-300">
+                  <span className="font-semibold text-white">Review SLA {playbook.reviewSlaHours}h:</span> {playbook.governanceEvidence}
+                </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Badge tone={playbook.humanApproval ? "amber" : "emerald"}>{playbook.humanApproval ? "Human approval" : "Auto draft"}</Badge>
                   <Badge tone={playbook.risk === "high" ? "rose" : playbook.risk === "medium" ? "amber" : "emerald"}>{playbook.risk} risk</Badge>

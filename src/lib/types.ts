@@ -38,6 +38,8 @@ export interface AutomationPlaybook {
   risk: AutomationRisk;
   successRate: number;
   averageMinutesSaved: number;
+  reviewSlaHours: number;
+  governanceEvidence: string;
 }
 
 export interface ConsultingActivity {
