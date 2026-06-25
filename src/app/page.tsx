@@ -1,4 +1,4 @@
-import { activities, averageConfidence, clients, failingIntegrationCount, healthyClientCount, heroMetrics, integrations, playbooks, readinessGates } from "@/lib/demo-data";
+import { activities, averageConfidence, clients, failingIntegrationCount, healthyClientCount, heroMetrics, integrations, playbooks, readinessGates, validationReviews } from "@/lib/demo-data";
 import type { AutomationRisk, IntegrationStatus, WorkspaceStatus } from "@/lib/types";
 
 function Badge({ children, tone = "slate" }: { children: React.ReactNode; tone?: "emerald" | "amber" | "rose" | "sky" | "violet" | "slate" }) {
@@ -184,6 +184,43 @@ export default function Home() {
             </div>
           </Card>
         </div>
+
+        <Card>
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-sky-300">Validation evidence</p>
+              <h2 className="mt-2 text-2xl font-bold text-white">Human review queue for Claude outputs</h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+                Enterprise Claude rollouts need proof that high-impact outputs are checked against source evidence before client-facing actions move forward.
+              </p>
+            </div>
+            <Badge tone="amber">{validationReviews.filter((review) => review.risk === "high").length} high-risk reviews</Badge>
+          </div>
+          <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            {validationReviews.map((review) => (
+              <div key={review.id} className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className="font-semibold text-white">{review.artifact}</h3>
+                    <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">{review.status.replace("-", " ")} · due in {review.dueInHours}h</p>
+                  </div>
+                  <StatusDot status={review.risk} />
+                </div>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{review.decisionGuardrail}</p>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Evidence anchors</p>
+                <ul className="mt-3 space-y-2 text-sm text-slate-300">
+                  {review.evidenceAnchors.map((anchor) => (
+                    <li key={anchor} className="rounded-xl border border-white/10 bg-slate-950/60 px-3 py-2">{anchor}</li>
+                  ))}
+                </ul>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Badge tone={review.risk === "high" ? "rose" : "amber"}>{review.risk} risk</Badge>
+                  <Badge tone="sky">Reviewer: {review.reviewer}</Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
 
         <div className="grid gap-8 lg:grid-cols-3">
           <Card className="lg:col-span-2">

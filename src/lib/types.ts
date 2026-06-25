@@ -42,6 +42,20 @@ export interface AutomationPlaybook {
   governanceEvidence: string;
 }
 
+export type ValidationReviewStatus = "ready" | "needs-source" | "blocked";
+
+export interface ValidationReview {
+  id: string;
+  clientId: string;
+  artifact: string;
+  risk: AutomationRisk;
+  reviewer: string;
+  evidenceAnchors: string[];
+  status: ValidationReviewStatus;
+  dueInHours: number;
+  decisionGuardrail: string;
+}
+
 export interface ConsultingActivity {
   id: string;
   clientId: string;

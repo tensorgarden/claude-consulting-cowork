@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { activities, averageConfidence, clients, failingIntegrationCount, healthyClientCount, heroMetrics, integrations, playbooks, readinessGates } from "../src/lib/demo-data";
+import { activities, averageConfidence, clients, failingIntegrationCount, healthyClientCount, heroMetrics, integrations, playbooks, readinessGates, validationReviews } from "../src/lib/demo-data";
 
 describe("claude consulting cowork demo data", () => {
   it("contains eight fictional consulting clients", () => {
@@ -76,6 +76,23 @@ describe("claude consulting cowork demo data", () => {
 
   it("counts healthy clients from the source collection", () => {
     expect(healthyClientCount).toBe(clients.filter((client) => client.status === "healthy").length);
+  });
+});
+
+describe("validation reviews", () => {
+  it("tracks evidence-backed validation reviews for Claude outputs", () => {
+    const clientIds = new Set(clients.map((client) => client.id));
+    expect(validationReviews.length).toBeGreaterThanOrEqual(3);
+    expect(validationReviews.every((review) => clientIds.has(review.clientId))).toBe(true);
+    expect(validationReviews.every((review) => review.evidenceAnchors.length >= 2)).toBe(true);
+  });
+
+  it("keeps high-risk validation reviews human-owned and time-bound", () => {
+    const highRiskReviews = validationReviews.filter((review) => review.risk === "high");
+    expect(highRiskReviews.length).toBeGreaterThan(0);
+    expect(highRiskReviews.every((review) => review.reviewer.length > 3)).toBe(true);
+    expect(highRiskReviews.every((review) => review.dueInHours <= 4)).toBe(true);
+    expect(highRiskReviews.every((review) => review.decisionGuardrail.length > 20)).toBe(true);
   });
 });
 

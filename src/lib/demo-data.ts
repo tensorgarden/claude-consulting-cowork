@@ -1,4 +1,4 @@
-import type { AutomationPlaybook, ClaudeCoworkClient, ConsultingActivity, HeroMetric, IntegrationHealth, ReadinessGate } from "./types";
+import type { AutomationPlaybook, ClaudeCoworkClient, ConsultingActivity, HeroMetric, IntegrationHealth, ReadinessGate, ValidationReview } from "./types";
 
 export const clients: ClaudeCoworkClient[] = [
   {
@@ -129,6 +129,42 @@ export const playbooks: AutomationPlaybook[] = [
   { id: "pb-006", clientId: "greenhouse-pro", name: "Closeout packet builder", trigger: "Project reaches substantial completion", humanApproval: true, risk: "medium", successRate: 91, averageMinutesSaved: 52, reviewSlaHours: 8, governanceEvidence: "Closeout review packet preserves warranty docs, as-built photos, punch items, and PM finalization approval." },
   { id: "pb-007", clientId: "summit-restoration", name: "Supplement timeline", trigger: "Carrier sends update", humanApproval: true, risk: "medium", successRate: 83, averageMinutesSaved: 27, reviewSlaHours: 4, governanceEvidence: "Claim supplement timeline records carrier update source, dollar terms, and adjuster approval before external email." },
   { id: "pb-008", clientId: "atlas-siteworks", name: "Proposal context pack", trigger: "Lead qualifies in HubSpot", humanApproval: true, risk: "medium", successRate: 88, averageMinutesSaved: 36, reviewSlaHours: 8, governanceEvidence: "Proposal context pack lists HubSpot source fields, exclusions, and PM approval before client export." }
+];
+
+export const validationReviews: ValidationReview[] = [
+  {
+    id: "vr-001",
+    clientId: "shoreline-renovation",
+    artifact: "Change-order margin memo",
+    risk: "high",
+    reviewer: "Marcus Lee",
+    evidenceAnchors: ["JobTread scope change CO-214", "QuickBooks cost-code variance report", "PM site photo packet"],
+    status: "ready",
+    dueInHours: 4,
+    decisionGuardrail: "Do not publish the JobTread change order until the PM confirms source-cost deltas and margin assumptions."
+  },
+  {
+    id: "vr-002",
+    clientId: "northstar-field",
+    artifact: "Dispatch summary pilot packet",
+    risk: "medium",
+    reviewer: "Priya Rao",
+    evidenceAnchors: ["Airtable work order record", "Supervisor spot-check notes"],
+    status: "needs-source",
+    dueInHours: 8,
+    decisionGuardrail: "Hold unsupervised dispatch promotion until missing technician notes are attached to the review packet."
+  },
+  {
+    id: "vr-003",
+    clientId: "summit-restoration",
+    artifact: "Carrier supplement email draft",
+    risk: "high",
+    reviewer: "Mina Alvarez",
+    evidenceAnchors: ["Carrier update email", "HubSpot claim timeline", "Adjuster estimate summary"],
+    status: "ready",
+    dueInHours: 3,
+    decisionGuardrail: "No external email send until adjuster approves dollar terms, coverage language, and source citations."
+  }
 ];
 
 export const activities: ConsultingActivity[] = [
