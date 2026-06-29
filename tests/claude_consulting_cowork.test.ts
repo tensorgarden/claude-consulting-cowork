@@ -94,6 +94,20 @@ describe("validation reviews", () => {
     expect(highRiskReviews.every((review) => review.dueInHours <= 4)).toBe(true);
     expect(highRiskReviews.every((review) => review.decisionGuardrail.length > 20)).toBe(true);
   });
+
+  it("keeps client-facing Claude outputs tied to fresh citation checks", () => {
+    const highRiskReviews = validationReviews.filter((review) => review.risk === "high");
+    expect(highRiskReviews.every((review) => review.citationVerification === "verified")).toBe(true);
+    expect(highRiskReviews.every((review) => review.sourceCheckedHoursAgo <= review.dueInHours)).toBe(true);
+    expect(validationReviews.every((review) => review.sourceVerificationNote.toLowerCase().includes("source"))).toBe(true);
+  });
+
+  it("keeps stale or incomplete citation packets out of ready status", () => {
+    const incompleteReviews = validationReviews.filter((review) => review.citationVerification !== "verified");
+    expect(incompleteReviews.length).toBeGreaterThan(0);
+    expect(incompleteReviews.every((review) => review.status !== "ready")).toBe(true);
+    expect(incompleteReviews.every((review) => review.sourceCheckedHoursAgo > review.dueInHours)).toBe(true);
+  });
 });
 
 describe("readiness gates", () => {

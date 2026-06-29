@@ -43,6 +43,7 @@ export interface AutomationPlaybook {
 }
 
 export type ValidationReviewStatus = "ready" | "needs-source" | "blocked";
+export type CitationVerification = "verified" | "needs-refresh" | "missing-source";
 
 export interface ValidationReview {
   id: string;
@@ -54,6 +55,9 @@ export interface ValidationReview {
   status: ValidationReviewStatus;
   dueInHours: number;
   decisionGuardrail: string;
+  citationVerification: CitationVerification;
+  sourceCheckedHoursAgo: number;
+  sourceVerificationNote: string;
 }
 
 export interface ConsultingActivity {

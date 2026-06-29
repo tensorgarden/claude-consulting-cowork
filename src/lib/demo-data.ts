@@ -141,7 +141,10 @@ export const validationReviews: ValidationReview[] = [
     evidenceAnchors: ["JobTread scope change CO-214", "QuickBooks cost-code variance report", "PM site photo packet"],
     status: "ready",
     dueInHours: 4,
-    decisionGuardrail: "Do not publish the JobTread change order until the PM confirms source-cost deltas and margin assumptions."
+    decisionGuardrail: "Do not publish the JobTread change order until the PM confirms source-cost deltas and margin assumptions.",
+    citationVerification: "verified",
+    sourceCheckedHoursAgo: 2,
+    sourceVerificationNote: "Cost and scope citations checked against current JobTread and QuickBooks source records before the client-facing memo."
   },
   {
     id: "vr-002",
@@ -152,7 +155,10 @@ export const validationReviews: ValidationReview[] = [
     evidenceAnchors: ["Airtable work order record", "Supervisor spot-check notes"],
     status: "needs-source",
     dueInHours: 8,
-    decisionGuardrail: "Hold unsupervised dispatch promotion until missing technician notes are attached to the review packet."
+    decisionGuardrail: "Hold unsupervised dispatch promotion until missing technician notes are attached to the review packet.",
+    citationVerification: "needs-refresh",
+    sourceCheckedHoursAgo: 18,
+    sourceVerificationNote: "Technician-note citations are stale, so the supervisor must refresh source evidence before unsupervised rollout."
   },
   {
     id: "vr-003",
@@ -163,7 +169,10 @@ export const validationReviews: ValidationReview[] = [
     evidenceAnchors: ["Carrier update email", "HubSpot claim timeline", "Adjuster estimate summary"],
     status: "ready",
     dueInHours: 3,
-    decisionGuardrail: "No external email send until adjuster approves dollar terms, coverage language, and source citations."
+    decisionGuardrail: "No external email send until adjuster approves dollar terms, coverage language, and source citations.",
+    citationVerification: "verified",
+    sourceCheckedHoursAgo: 1,
+    sourceVerificationNote: "Carrier coverage terms and estimate figures were checked against same-day source citations before external email send."
   }
 ];
 
