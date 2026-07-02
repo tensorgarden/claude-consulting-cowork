@@ -210,6 +210,9 @@ export default function Home() {
                 <p className="mt-3 rounded-xl border border-sky-400/20 bg-sky-400/10 p-3 text-xs leading-5 text-sky-100">
                   <span className="font-semibold text-white">Source check {review.sourceCheckedHoursAgo}h ago · {review.citationVerification.replace("-", " ")}:</span> {review.sourceVerificationNote}
                 </p>
+                <p className="mt-3 rounded-xl border border-amber-400/20 bg-amber-400/10 p-3 text-xs leading-5 text-amber-100">
+                  <span className="font-semibold text-white">Approval trail {review.approvalTrail.ticketId} · {review.approvalTrail.status.replace("-", " ")}:</span> {review.approvalTrail.blockedAction} blocked via {review.approvalTrail.system}.
+                </p>
                 <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Evidence anchors</p>
                 <ul className="mt-3 space-y-2 text-sm text-slate-300">
                   {review.evidenceAnchors.map((anchor) => (

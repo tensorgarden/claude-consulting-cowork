@@ -108,6 +108,16 @@ describe("validation reviews", () => {
     expect(incompleteReviews.every((review) => review.status !== "ready")).toBe(true);
     expect(incompleteReviews.every((review) => review.sourceCheckedHoursAgo > review.dueInHours)).toBe(true);
   });
+
+  it("ties blocked client-facing actions to auditable approval trails", () => {
+    const highRiskReviews = validationReviews.filter((review) => review.risk === "high");
+    const incompleteReviews = validationReviews.filter((review) => review.citationVerification !== "verified");
+
+    expect(validationReviews.every((review) => review.approvalTrail.ticketId.length >= 8)).toBe(true);
+    expect(validationReviews.every((review) => review.approvalTrail.blockedAction.length > 10)).toBe(true);
+    expect(highRiskReviews.every((review) => review.approvalTrail.status === "captured")).toBe(true);
+    expect(incompleteReviews.every((review) => review.approvalTrail.status !== "captured")).toBe(true);
+  });
 });
 
 describe("readiness gates", () => {

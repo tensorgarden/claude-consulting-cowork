@@ -144,7 +144,13 @@ export const validationReviews: ValidationReview[] = [
     decisionGuardrail: "Do not publish the JobTread change order until the PM confirms source-cost deltas and margin assumptions.",
     citationVerification: "verified",
     sourceCheckedHoursAgo: 2,
-    sourceVerificationNote: "Cost and scope citations checked against current JobTread and QuickBooks source records before the client-facing memo."
+    sourceVerificationNote: "Cost and scope citations checked against current JobTread and QuickBooks source records before the client-facing memo.",
+    approvalTrail: {
+      system: "JobTread",
+      ticketId: "JT-CO-214-APPROVAL",
+      status: "captured",
+      blockedAction: "Change order publish"
+    }
   },
   {
     id: "vr-002",
@@ -158,7 +164,13 @@ export const validationReviews: ValidationReview[] = [
     decisionGuardrail: "Hold unsupervised dispatch promotion until missing technician notes are attached to the review packet.",
     citationVerification: "needs-refresh",
     sourceCheckedHoursAgo: 18,
-    sourceVerificationNote: "Technician-note citations are stale, so the supervisor must refresh source evidence before unsupervised rollout."
+    sourceVerificationNote: "Technician-note citations are stale, so the supervisor must refresh source evidence before unsupervised rollout.",
+    approvalTrail: {
+      system: "Slack",
+      ticketId: "SLACK-DISPATCH-PILOT-17",
+      status: "pending-review",
+      blockedAction: "Unsupervised dispatch promotion"
+    }
   },
   {
     id: "vr-003",
@@ -172,7 +184,13 @@ export const validationReviews: ValidationReview[] = [
     decisionGuardrail: "No external email send until adjuster approves dollar terms, coverage language, and source citations.",
     citationVerification: "verified",
     sourceCheckedHoursAgo: 1,
-    sourceVerificationNote: "Carrier coverage terms and estimate figures were checked against same-day source citations before external email send."
+    sourceVerificationNote: "Carrier coverage terms and estimate figures were checked against same-day source citations before external email send.",
+    approvalTrail: {
+      system: "HubSpot",
+      ticketId: "HS-CLAIM-778-APPROVAL",
+      status: "captured",
+      blockedAction: "External carrier email send"
+    }
   }
 ];
 
