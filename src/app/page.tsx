@@ -213,6 +213,15 @@ export default function Home() {
                 <p className="mt-3 rounded-xl border border-amber-400/20 bg-amber-400/10 p-3 text-xs leading-5 text-amber-100">
                   <span className="font-semibold text-white">Approval trail {review.approvalTrail.ticketId} · {review.approvalTrail.status.replace("-", " ")}:</span> {review.approvalTrail.blockedAction} blocked via {review.approvalTrail.system}.
                 </p>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Claim checks</p>
+                <ul className="mt-3 space-y-2 text-sm text-slate-300">
+                  {review.claimChecks.map((check) => (
+                    <li key={`${review.id}-${check.claim}`} className="rounded-xl border border-white/10 bg-slate-950/60 px-3 py-2">
+                      <span className={check.status === "verified" ? "text-emerald-300" : "text-amber-300"}>{check.status.replace("-", " ")}</span> · {check.claim}
+                      <span className="mt-1 block text-xs text-slate-500">Source: {check.sourceAnchor} · Owner: {check.owner}</span>
+                    </li>
+                  ))}
+                </ul>
                 <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Evidence anchors</p>
                 <ul className="mt-3 space-y-2 text-sm text-slate-300">
                   {review.evidenceAnchors.map((anchor) => (

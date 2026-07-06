@@ -118,6 +118,22 @@ describe("validation reviews", () => {
     expect(highRiskReviews.every((review) => review.approvalTrail.status === "captured")).toBe(true);
     expect(incompleteReviews.every((review) => review.approvalTrail.status !== "captured")).toBe(true);
   });
+
+  it("requires claim-level source checks for every review packet", () => {
+    expect(validationReviews.every((review) => review.claimChecks.length >= 2)).toBe(true);
+    expect(
+      validationReviews.every((review) => review.claimChecks.every((check) => review.evidenceAnchors.includes(check.sourceAnchor)))
+    ).toBe(true);
+    expect(validationReviews.every((review) => review.claimChecks.every((check) => check.owner === review.reviewer))).toBe(true);
+  });
+
+  it("blocks ready status when claim checks still need refresh", () => {
+    const readyReviews = validationReviews.filter((review) => review.status === "ready");
+    const incompleteReviews = validationReviews.filter((review) => review.citationVerification !== "verified");
+
+    expect(readyReviews.every((review) => review.claimChecks.every((check) => check.status === "verified"))).toBe(true);
+    expect(incompleteReviews.every((review) => review.claimChecks.some((check) => check.status !== "verified"))).toBe(true);
+  });
 });
 
 describe("readiness gates", () => {

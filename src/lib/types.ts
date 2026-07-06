@@ -44,6 +44,7 @@ export interface AutomationPlaybook {
 
 export type ValidationReviewStatus = "ready" | "needs-source" | "blocked";
 export type CitationVerification = "verified" | "needs-refresh" | "missing-source";
+export type ClaimCheckStatus = "verified" | "needs-refresh" | "missing-source";
 export type ApprovalTrailStatus = "captured" | "pending-review" | "escalated";
 export type ApprovalTrailSystem = "Slack" | "JobTread" | "HubSpot" | "QuickBooks Online" | "Airtable" | "Google Workspace";
 
@@ -52,6 +53,13 @@ export interface ApprovalTrail {
   ticketId: string;
   status: ApprovalTrailStatus;
   blockedAction: string;
+}
+
+export interface ClaimCheck {
+  claim: string;
+  sourceAnchor: string;
+  status: ClaimCheckStatus;
+  owner: string;
 }
 
 export interface ValidationReview {
@@ -67,6 +75,7 @@ export interface ValidationReview {
   citationVerification: CitationVerification;
   sourceCheckedHoursAgo: number;
   sourceVerificationNote: string;
+  claimChecks: ClaimCheck[];
   approvalTrail: ApprovalTrail;
 }
 

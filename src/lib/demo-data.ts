@@ -145,6 +145,20 @@ export const validationReviews: ValidationReview[] = [
     citationVerification: "verified",
     sourceCheckedHoursAgo: 2,
     sourceVerificationNote: "Cost and scope citations checked against current JobTread and QuickBooks source records before the client-facing memo.",
+    claimChecks: [
+      {
+        claim: "Margin memo uses the current cost-code variance before JobTread publishing.",
+        sourceAnchor: "QuickBooks cost-code variance report",
+        status: "verified",
+        owner: "Marcus Lee"
+      },
+      {
+        claim: "Scope change is supported by CO-214 and the PM site photo packet.",
+        sourceAnchor: "JobTread scope change CO-214",
+        status: "verified",
+        owner: "Marcus Lee"
+      }
+    ],
     approvalTrail: {
       system: "JobTread",
       ticketId: "JT-CO-214-APPROVAL",
@@ -165,6 +179,20 @@ export const validationReviews: ValidationReview[] = [
     citationVerification: "needs-refresh",
     sourceCheckedHoursAgo: 18,
     sourceVerificationNote: "Technician-note citations are stale, so the supervisor must refresh source evidence before unsupervised rollout.",
+    claimChecks: [
+      {
+        claim: "Supervisor spot checks confirm the dispatch packet is safe for pilot review.",
+        sourceAnchor: "Supervisor spot-check notes",
+        status: "verified",
+        owner: "Priya Rao"
+      },
+      {
+        claim: "Technician notes are current enough for unsupervised dispatch promotion.",
+        sourceAnchor: "Airtable work order record",
+        status: "needs-refresh",
+        owner: "Priya Rao"
+      }
+    ],
     approvalTrail: {
       system: "Slack",
       ticketId: "SLACK-DISPATCH-PILOT-17",
@@ -185,6 +213,20 @@ export const validationReviews: ValidationReview[] = [
     citationVerification: "verified",
     sourceCheckedHoursAgo: 1,
     sourceVerificationNote: "Carrier coverage terms and estimate figures were checked against same-day source citations before external email send.",
+    claimChecks: [
+      {
+        claim: "Carrier coverage language matches the latest update email before external send.",
+        sourceAnchor: "Carrier update email",
+        status: "verified",
+        owner: "Mina Alvarez"
+      },
+      {
+        claim: "Dollar terms match the adjuster estimate summary and HubSpot claim timeline.",
+        sourceAnchor: "Adjuster estimate summary",
+        status: "verified",
+        owner: "Mina Alvarez"
+      }
+    ],
     approvalTrail: {
       system: "HubSpot",
       ticketId: "HS-CLAIM-778-APPROVAL",
