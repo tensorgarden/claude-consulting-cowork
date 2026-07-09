@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { activities, averageConfidence, clients, failingIntegrationCount, healthyClientCount, heroMetrics, integrations, playbooks, readinessGates, validationReviews } from "../src/lib/demo-data";
+import { activities, averageConfidence, clients, failingIntegrationCount, healthyClientCount, heroMetrics, integrations, playbooks, readinessGates, validationReviews, workspaceAccessReviews } from "../src/lib/demo-data";
 
 describe("claude consulting cowork demo data", () => {
   it("contains eight fictional consulting clients", () => {
@@ -133,6 +133,38 @@ describe("validation reviews", () => {
 
     expect(readyReviews.every((review) => review.claimChecks.every((check) => check.status === "verified"))).toBe(true);
     expect(incompleteReviews.every((review) => review.claimChecks.some((check) => check.status !== "verified"))).toBe(true);
+  });
+});
+
+describe("workspace access reviews", () => {
+  it("documents what Claude can see and draft for known clients", () => {
+    const clientIds = new Set(clients.map((client) => client.id));
+
+    expect(workspaceAccessReviews.length).toBeGreaterThanOrEqual(3);
+    expect(workspaceAccessReviews.every((review) => clientIds.has(review.clientId))).toBe(true);
+    expect(workspaceAccessReviews.every((review) => review.dataScope.length >= 2)).toBe(true);
+    expect(workspaceAccessReviews.every((review) => review.allowedActions.length > 0)).toBe(true);
+  });
+
+  it("keeps high-impact Claude actions blocked behind named owners", () => {
+    const highImpactTerms = ["publish", "send", "payment", "bill", "client", "schedule"];
+
+    expect(workspaceAccessReviews.every((review) => review.owner.length > 3)).toBe(true);
+    expect(workspaceAccessReviews.every((review) => review.reviewedHoursAgo <= 24)).toBe(true);
+    expect(workspaceAccessReviews.every((review) => review.blockedActions.length >= 2)).toBe(true);
+    expect(
+      workspaceAccessReviews.every((review) =>
+        review.blockedActions.some((action) => highImpactTerms.some((term) => action.toLowerCase().includes(term)))
+      )
+    ).toBe(true);
+  });
+
+  it("does not mix approved drafting work with blocked execution actions", () => {
+    expect(
+      workspaceAccessReviews.every((review) =>
+        review.allowedActions.every((allowedAction) => !review.blockedActions.includes(allowedAction))
+      )
+    ).toBe(true);
   });
 });
 

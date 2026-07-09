@@ -55,6 +55,17 @@ export interface ApprovalTrail {
   blockedAction: string;
 }
 
+export interface WorkspaceAccessReview {
+  id: string;
+  clientId: string;
+  dataScope: string[];
+  allowedActions: string[];
+  blockedActions: string[];
+  owner: string;
+  reviewedHoursAgo: number;
+  risk: AutomationRisk;
+}
+
 export interface ClaimCheck {
   claim: string;
   sourceAnchor: string;

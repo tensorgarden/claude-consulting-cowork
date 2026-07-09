@@ -1,4 +1,4 @@
-import type { AutomationPlaybook, ClaudeCoworkClient, ConsultingActivity, HeroMetric, IntegrationHealth, ReadinessGate, ValidationReview } from "./types";
+import type { AutomationPlaybook, ClaudeCoworkClient, ConsultingActivity, HeroMetric, IntegrationHealth, ReadinessGate, ValidationReview, WorkspaceAccessReview } from "./types";
 
 export const clients: ClaudeCoworkClient[] = [
   {
@@ -233,6 +233,39 @@ export const validationReviews: ValidationReview[] = [
       status: "captured",
       blockedAction: "External carrier email send"
     }
+  }
+];
+
+export const workspaceAccessReviews: WorkspaceAccessReview[] = [
+  {
+    id: "war-001",
+    clientId: "shoreline-renovation",
+    dataScope: ["JobTread scope changes", "QuickBooks cost-code variance report", "Google Drive site photo packet"],
+    allowedActions: ["Draft change-order margin memo", "Summarize source-cost deltas"],
+    blockedActions: ["Publish JobTread change order", "Send client price update"],
+    owner: "Marcus Lee",
+    reviewedHoursAgo: 6,
+    risk: "high"
+  },
+  {
+    id: "war-002",
+    clientId: "copper-canyon",
+    dataScope: ["Vendor bill inbox", "QuickBooks sandbox permission logs", "Slack accounting approval thread"],
+    allowedActions: ["Classify bill anomalies", "Prepare reconciliation checklist"],
+    blockedActions: ["Create QuickBooks bill", "Schedule vendor payment"],
+    owner: "Ava Mitchell",
+    reviewedHoursAgo: 2,
+    risk: "high"
+  },
+  {
+    id: "war-003",
+    clientId: "northstar-field",
+    dataScope: ["Airtable dispatch board", "Technician work-order notes", "HubSpot service timeline"],
+    allowedActions: ["Draft dispatch summary", "Prepare supervisor review note"],
+    blockedActions: ["Update technician schedule", "Send client ETA"],
+    owner: "Priya Rao",
+    reviewedHoursAgo: 18,
+    risk: "medium"
   }
 ];
 
