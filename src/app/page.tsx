@@ -258,7 +258,7 @@ export default function Home() {
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h3 className="font-semibold text-white">{client?.company ?? scope.clientId}</h3>
-                      <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">Owner: {scope.owner} · reviewed {scope.reviewedHoursAgo}h ago</p>
+                      <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">Owner: {scope.owner} · reviewed {scope.reviewedHoursAgo}h ago · access expires in {scope.accessExpiresInHours}h</p>
                     </div>
                     <Badge tone={tone}>{scope.risk} risk</Badge>
                   </div>
@@ -274,6 +274,7 @@ export default function Home() {
                       <li key={`${scope.id}-${action}`} className="rounded-xl border border-rose-400/20 bg-rose-400/10 px-3 py-2">{action}</li>
                     ))}
                   </ul>
+                  <p className="mt-4 rounded-xl border border-amber-400/20 bg-amber-400/10 p-3 text-xs leading-5 text-amber-100">{scope.leastPrivilegeRationale}</p>
                   <p className="mt-4 text-xs leading-5 text-slate-400">Allowed drafting: {scope.allowedActions.join(" · ")}</p>
                 </div>
               );

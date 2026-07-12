@@ -159,6 +159,15 @@ describe("workspace access reviews", () => {
     ).toBe(true);
   });
 
+  it("time-boxes Claude tool access with least-privilege rationale", () => {
+    const highRiskReviews = workspaceAccessReviews.filter((review) => review.risk === "high");
+
+    expect(workspaceAccessReviews.every((review) => review.accessExpiresInHours > 0 && review.accessExpiresInHours <= 24)).toBe(true);
+    expect(highRiskReviews.every((review) => review.accessExpiresInHours <= 8)).toBe(true);
+    expect(workspaceAccessReviews.every((review) => review.leastPrivilegeRationale.toLowerCase().includes("read-only"))).toBe(true);
+    expect(workspaceAccessReviews.every((review) => review.leastPrivilegeRationale.toLowerCase().includes("approval"))).toBe(true);
+  });
+
   it("does not mix approved drafting work with blocked execution actions", () => {
     expect(
       workspaceAccessReviews.every((review) =>

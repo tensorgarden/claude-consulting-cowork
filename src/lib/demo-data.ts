@@ -245,6 +245,8 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
     blockedActions: ["Publish JobTread change order", "Send client price update"],
     owner: "Marcus Lee",
     reviewedHoursAgo: 6,
+    accessExpiresInHours: 6,
+    leastPrivilegeRationale: "Read-only source access; JobTread publishing and outbound client messaging require a fresh PM approval.",
     risk: "high"
   },
   {
@@ -255,6 +257,8 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
     blockedActions: ["Create QuickBooks bill", "Schedule vendor payment"],
     owner: "Ava Mitchell",
     reviewedHoursAgo: 2,
+    accessExpiresInHours: 4,
+    leastPrivilegeRationale: "Read-only bill triage access; QuickBooks writes and payments require a fresh accounting approval.",
     risk: "high"
   },
   {
@@ -265,6 +269,8 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
     blockedActions: ["Update technician schedule", "Send client ETA"],
     owner: "Priya Rao",
     reviewedHoursAgo: 18,
+    accessExpiresInHours: 12,
+    leastPrivilegeRationale: "Read-only dispatch context; schedule changes and client ETA sends require a fresh supervisor approval.",
     risk: "medium"
   }
 ];

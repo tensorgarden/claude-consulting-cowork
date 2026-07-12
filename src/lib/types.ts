@@ -63,6 +63,8 @@ export interface WorkspaceAccessReview {
   blockedActions: string[];
   owner: string;
   reviewedHoursAgo: number;
+  accessExpiresInHours: number;
+  leastPrivilegeRationale: string;
   risk: AutomationRisk;
 }
 
