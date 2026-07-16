@@ -55,10 +55,22 @@ export interface ApprovalTrail {
   blockedAction: string;
 }
 
+export type ConnectorTrustStatus = "verified" | "needs-review" | "blocked";
+export type UntrustedContentAction = "quarantine-and-review" | "block-connector";
+
+export interface ConnectorTrustReview {
+  connector: ApprovalTrailSystem;
+  status: ConnectorTrustStatus;
+  reviewedBy: string;
+  toolOutputControl: string;
+  untrustedContentAction: UntrustedContentAction;
+}
+
 export interface WorkspaceAccessReview {
   id: string;
   clientId: string;
   dataScope: string[];
+  connectorTrust: ConnectorTrustReview;
   allowedActions: string[];
   blockedActions: string[];
   owner: string;

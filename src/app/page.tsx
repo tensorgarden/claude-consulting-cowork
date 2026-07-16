@@ -252,6 +252,7 @@ export default function Home() {
             {workspaceAccessReviews.map((scope) => {
               const client = clients.find((item) => item.id === scope.clientId);
               const tone = scope.risk === "high" ? "rose" : scope.risk === "medium" ? "amber" : "emerald";
+              const trustTone = scope.connectorTrust.status === "verified" ? "emerald" : scope.connectorTrust.status === "needs-review" ? "amber" : "rose";
 
               return (
                 <div key={scope.id} className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
@@ -275,6 +276,14 @@ export default function Home() {
                     ))}
                   </ul>
                   <p className="mt-4 rounded-xl border border-amber-400/20 bg-amber-400/10 p-3 text-xs leading-5 text-amber-100">{scope.leastPrivilegeRationale}</p>
+                  <div className="mt-4 rounded-xl border border-violet-400/20 bg-violet-400/10 p-3 text-xs leading-5 text-violet-100">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="font-semibold text-white">Connector trust · {scope.connectorTrust.connector}</span>
+                      <Badge tone={trustTone}>{scope.connectorTrust.status.replace("-", " ")}</Badge>
+                    </div>
+                    <p className="mt-2">Reviewed by {scope.connectorTrust.reviewedBy}. {scope.connectorTrust.toolOutputControl}</p>
+                    <p className="mt-2 text-violet-200">Untrusted content: {scope.connectorTrust.untrustedContentAction.replaceAll("-", " ")}.</p>
+                  </div>
                   <p className="mt-4 text-xs leading-5 text-slate-400">Allowed drafting: {scope.allowedActions.join(" · ")}</p>
                 </div>
               );

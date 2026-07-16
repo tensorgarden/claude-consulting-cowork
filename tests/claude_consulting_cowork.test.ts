@@ -168,6 +168,25 @@ describe("workspace access reviews", () => {
     expect(workspaceAccessReviews.every((review) => review.leastPrivilegeRationale.toLowerCase().includes("approval"))).toBe(true);
   });
 
+  it("records named trust checks for MCP connector tool output", () => {
+    expect(workspaceAccessReviews.every((review) => review.connectorTrust.reviewedBy === review.owner)).toBe(true);
+    expect(workspaceAccessReviews.every((review) => review.connectorTrust.connector.length > 3)).toBe(true);
+    expect(
+      workspaceAccessReviews.every((review) => {
+        const control = review.connectorTrust.toolOutputControl.toLowerCase();
+        return control.includes("untrusted") && control.includes("instructions");
+      })
+    ).toBe(true);
+  });
+
+  it("blocks or quarantines unresolved connector content before tool use", () => {
+    const unresolvedReviews = workspaceAccessReviews.filter((review) => review.connectorTrust.status !== "verified");
+
+    expect(unresolvedReviews.length).toBeGreaterThan(0);
+    expect(unresolvedReviews.every((review) => review.connectorTrust.untrustedContentAction === "block-connector")).toBe(true);
+    expect(unresolvedReviews.every((review) => review.blockedActions.length >= 2)).toBe(true);
+  });
+
   it("does not mix approved drafting work with blocked execution actions", () => {
     expect(
       workspaceAccessReviews.every((review) =>
