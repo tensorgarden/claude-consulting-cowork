@@ -179,6 +179,24 @@ describe("workspace access reviews", () => {
     ).toBe(true);
   });
 
+  it("records an approved tool-description baseline for every connector", () => {
+    expect(workspaceAccessReviews.every((review) => review.connectorTrust.approvedToolDescriptionVersion.length > 12)).toBe(true);
+    expect(
+      workspaceAccessReviews
+        .filter((review) => !review.connectorTrust.metadataChangedSinceReview)
+        .every((review) => review.connectorTrust.metadataChangeResponse === "continue-monitoring")
+    ).toBe(true);
+  });
+
+  it("blocks connectors whose tool metadata changed after approval", () => {
+    const driftedReviews = workspaceAccessReviews.filter((review) => review.connectorTrust.metadataChangedSinceReview);
+
+    expect(driftedReviews.length).toBeGreaterThan(0);
+    expect(driftedReviews.every((review) => review.connectorTrust.status !== "verified")).toBe(true);
+    expect(driftedReviews.every((review) => review.connectorTrust.metadataChangeResponse === "block-until-reapproved")).toBe(true);
+    expect(driftedReviews.every((review) => review.connectorTrust.untrustedContentAction === "block-connector")).toBe(true);
+  });
+
   it("blocks or quarantines unresolved connector content before tool use", () => {
     const unresolvedReviews = workspaceAccessReviews.filter((review) => review.connectorTrust.status !== "verified");
 

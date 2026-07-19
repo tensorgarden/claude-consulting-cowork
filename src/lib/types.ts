@@ -57,11 +57,15 @@ export interface ApprovalTrail {
 
 export type ConnectorTrustStatus = "verified" | "needs-review" | "blocked";
 export type UntrustedContentAction = "quarantine-and-review" | "block-connector";
+export type MetadataChangeResponse = "continue-monitoring" | "block-until-reapproved";
 
 export interface ConnectorTrustReview {
   connector: ApprovalTrailSystem;
   status: ConnectorTrustStatus;
   reviewedBy: string;
+  approvedToolDescriptionVersion: string;
+  metadataChangedSinceReview: boolean;
+  metadataChangeResponse: MetadataChangeResponse;
   toolOutputControl: string;
   untrustedContentAction: UntrustedContentAction;
 }

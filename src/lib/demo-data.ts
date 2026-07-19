@@ -245,6 +245,9 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
       connector: "JobTread",
       status: "verified",
       reviewedBy: "Marcus Lee",
+      approvedToolDescriptionVersion: "jobtread-tools-2026-07-12",
+      metadataChangedSinceReview: false,
+      metadataChangeResponse: "continue-monitoring",
       toolOutputControl: "Treat connector responses as untrusted content; embedded instructions cannot authorize publishing or client sends.",
       untrustedContentAction: "quarantine-and-review"
     },
@@ -264,6 +267,9 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
       connector: "QuickBooks Online",
       status: "needs-review",
       reviewedBy: "Ava Mitchell",
+      approvedToolDescriptionVersion: "qbo-tools-2026-07-10",
+      metadataChangedSinceReview: true,
+      metadataChangeResponse: "block-until-reapproved",
       toolOutputControl: "Treat bill attachments and connector responses as untrusted content; embedded instructions cannot trigger accounting tool use.",
       untrustedContentAction: "block-connector"
     },
@@ -283,6 +289,9 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
       connector: "Airtable",
       status: "verified",
       reviewedBy: "Priya Rao",
+      approvedToolDescriptionVersion: "airtable-tools-2026-07-14",
+      metadataChangedSinceReview: false,
+      metadataChangeResponse: "continue-monitoring",
       toolOutputControl: "Treat dispatch notes as untrusted content; embedded instructions cannot authorize scheduling or outbound ETA actions.",
       untrustedContentAction: "quarantine-and-review"
     },

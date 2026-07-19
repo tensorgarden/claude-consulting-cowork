@@ -282,7 +282,8 @@ export default function Home() {
                       <Badge tone={trustTone}>{scope.connectorTrust.status.replace("-", " ")}</Badge>
                     </div>
                     <p className="mt-2">Reviewed by {scope.connectorTrust.reviewedBy}. {scope.connectorTrust.toolOutputControl}</p>
-                    <p className="mt-2 text-violet-200">Untrusted content: {scope.connectorTrust.untrustedContentAction.replaceAll("-", " ")}.</p>
+                    <p className="mt-2 text-violet-200">Approved tool description: {scope.connectorTrust.approvedToolDescriptionVersion} · Metadata drift: {scope.connectorTrust.metadataChangedSinceReview ? "detected" : "none"}.</p>
+                    <p className="mt-2 text-violet-200">Change response: {scope.connectorTrust.metadataChangeResponse.replaceAll("-", " ")} · Untrusted content: {scope.connectorTrust.untrustedContentAction.replaceAll("-", " ")}.</p>
                   </div>
                   <p className="mt-4 text-xs leading-5 text-slate-400">Allowed drafting: {scope.allowedActions.join(" · ")}</p>
                 </div>
