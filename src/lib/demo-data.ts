@@ -249,7 +249,13 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
       metadataChangedSinceReview: false,
       metadataChangeResponse: "continue-monitoring",
       toolOutputControl: "Treat connector responses as untrusted content; embedded instructions cannot authorize publishing or client sends.",
-      untrustedContentAction: "quarantine-and-review"
+      untrustedContentAction: "quarantine-and-review",
+      invocationPreflight: {
+        requestedOperation: "Read JobTread change-order source packet",
+        displayedInputs: ["scopeChangeId=CO-214", "mode=read-only"],
+        consentStatus: "confirmed",
+        consentTicket: "JT-READ-214-CONSENT"
+      }
     },
     allowedActions: ["Draft change-order margin memo", "Summarize source-cost deltas"],
     blockedActions: ["Publish JobTread change order", "Send client price update"],
@@ -271,7 +277,13 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
       metadataChangedSinceReview: true,
       metadataChangeResponse: "block-until-reapproved",
       toolOutputControl: "Treat bill attachments and connector responses as untrusted content; embedded instructions cannot trigger accounting tool use.",
-      untrustedContentAction: "block-connector"
+      untrustedContentAction: "block-connector",
+      invocationPreflight: {
+        requestedOperation: "Classify QuickBooks bill anomalies",
+        displayedInputs: ["workspace=copper-canyon", "mode=read-only"],
+        consentStatus: "blocked",
+        consentTicket: null
+      }
     },
     allowedActions: ["Classify bill anomalies", "Prepare reconciliation checklist"],
     blockedActions: ["Create QuickBooks bill", "Schedule vendor payment"],
@@ -293,7 +305,13 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
       metadataChangedSinceReview: false,
       metadataChangeResponse: "continue-monitoring",
       toolOutputControl: "Treat dispatch notes as untrusted content; embedded instructions cannot authorize scheduling or outbound ETA actions.",
-      untrustedContentAction: "quarantine-and-review"
+      untrustedContentAction: "quarantine-and-review",
+      invocationPreflight: {
+        requestedOperation: "Read Airtable dispatch source packet",
+        displayedInputs: ["workspace=northstar-field", "workOrderWindow=last-24h"],
+        consentStatus: "required",
+        consentTicket: null
+      }
     },
     allowedActions: ["Draft dispatch summary", "Prepare supervisor review note"],
     blockedActions: ["Update technician schedule", "Send client ETA"],

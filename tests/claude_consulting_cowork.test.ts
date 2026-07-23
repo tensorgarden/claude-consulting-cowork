@@ -197,6 +197,32 @@ describe("workspace access reviews", () => {
     expect(driftedReviews.every((review) => review.connectorTrust.untrustedContentAction === "block-connector")).toBe(true);
   });
 
+  it("shows exact tool inputs before MCP invocation decisions", () => {
+    expect(workspaceAccessReviews.every((review) => review.connectorTrust.invocationPreflight.requestedOperation.length > 10)).toBe(true);
+    expect(workspaceAccessReviews.every((review) => review.connectorTrust.invocationPreflight.displayedInputs.length >= 2)).toBe(true);
+    expect(
+      workspaceAccessReviews.every((review) =>
+        review.connectorTrust.invocationPreflight.displayedInputs.every((input) => input.includes("="))
+      )
+    ).toBe(true);
+  });
+
+  it("keeps unconfirmed and drifted MCP invocations blocked", () => {
+    const unconfirmed = workspaceAccessReviews.filter(
+      (review) => review.connectorTrust.invocationPreflight.consentStatus !== "confirmed"
+    );
+    const confirmed = workspaceAccessReviews.filter(
+      (review) => review.connectorTrust.invocationPreflight.consentStatus === "confirmed"
+    );
+    const drifted = workspaceAccessReviews.filter((review) => review.connectorTrust.metadataChangedSinceReview);
+
+    expect(unconfirmed.length).toBeGreaterThan(0);
+    expect(confirmed.length).toBeGreaterThan(0);
+    expect(unconfirmed.every((review) => review.connectorTrust.invocationPreflight.consentTicket === null)).toBe(true);
+    expect(confirmed.every((review) => (review.connectorTrust.invocationPreflight.consentTicket?.length ?? 0) >= 8)).toBe(true);
+    expect(drifted.every((review) => review.connectorTrust.invocationPreflight.consentStatus === "blocked")).toBe(true);
+  });
+
   it("blocks or quarantines unresolved connector content before tool use", () => {
     const unresolvedReviews = workspaceAccessReviews.filter((review) => review.connectorTrust.status !== "verified");
 

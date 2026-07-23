@@ -284,6 +284,9 @@ export default function Home() {
                     <p className="mt-2">Reviewed by {scope.connectorTrust.reviewedBy}. {scope.connectorTrust.toolOutputControl}</p>
                     <p className="mt-2 text-violet-200">Approved tool description: {scope.connectorTrust.approvedToolDescriptionVersion} · Metadata drift: {scope.connectorTrust.metadataChangedSinceReview ? "detected" : "none"}.</p>
                     <p className="mt-2 text-violet-200">Change response: {scope.connectorTrust.metadataChangeResponse.replaceAll("-", " ")} · Untrusted content: {scope.connectorTrust.untrustedContentAction.replaceAll("-", " ")}.</p>
+                    <p className="mt-2 border-t border-violet-300/20 pt-2 text-violet-100">
+                      <span className="font-semibold text-white">Invocation preflight:</span> {scope.connectorTrust.invocationPreflight.requestedOperation} · Inputs shown: {scope.connectorTrust.invocationPreflight.displayedInputs.join(" · ")} · Consent: {scope.connectorTrust.invocationPreflight.consentStatus}{scope.connectorTrust.invocationPreflight.consentTicket ? ` via ${scope.connectorTrust.invocationPreflight.consentTicket}` : ""}.
+                    </p>
                   </div>
                   <p className="mt-4 text-xs leading-5 text-slate-400">Allowed drafting: {scope.allowedActions.join(" · ")}</p>
                 </div>

@@ -58,6 +58,14 @@ export interface ApprovalTrail {
 export type ConnectorTrustStatus = "verified" | "needs-review" | "blocked";
 export type UntrustedContentAction = "quarantine-and-review" | "block-connector";
 export type MetadataChangeResponse = "continue-monitoring" | "block-until-reapproved";
+export type ToolInvocationConsent = "confirmed" | "required" | "blocked";
+
+export interface ToolInvocationPreflight {
+  requestedOperation: string;
+  displayedInputs: string[];
+  consentStatus: ToolInvocationConsent;
+  consentTicket: string | null;
+}
 
 export interface ConnectorTrustReview {
   connector: ApprovalTrailSystem;
@@ -68,6 +76,7 @@ export interface ConnectorTrustReview {
   metadataChangeResponse: MetadataChangeResponse;
   toolOutputControl: string;
   untrustedContentAction: UntrustedContentAction;
+  invocationPreflight: ToolInvocationPreflight;
 }
 
 export interface WorkspaceAccessReview {
