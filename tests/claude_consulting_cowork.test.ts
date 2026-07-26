@@ -223,6 +223,43 @@ describe("workspace access reviews", () => {
     expect(drifted.every((review) => review.connectorTrust.invocationPreflight.consentStatus === "blocked")).toBe(true);
   });
 
+  it("requires a minimized egress plan before MCP tool calls", () => {
+    for (const review of workspaceAccessReviews) {
+      const preflight = review.connectorTrust.invocationPreflight;
+      const displayedFields = preflight.displayedInputs.map((input) => input.split("=")[0]).sort();
+
+      expect(preflight.egressReview.destination.length).toBeGreaterThan(12);
+      expect(preflight.egressReview.approvedFields.slice().sort()).toEqual(displayedFields);
+      expect(preflight.egressReview.redactedFields.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("blocks sensitive or unconfirmed egress from being treated as approved", () => {
+    const approved = workspaceAccessReviews.filter(
+      (review) => review.connectorTrust.invocationPreflight.egressReview.decision === "approved-minimized"
+    );
+    const unconfirmed = workspaceAccessReviews.filter(
+      (review) => review.connectorTrust.invocationPreflight.consentStatus !== "confirmed"
+    );
+    const financial = workspaceAccessReviews.filter(
+      (review) => review.connectorTrust.invocationPreflight.egressReview.dataClassification === "financial"
+    );
+
+    expect(approved.length).toBeGreaterThan(0);
+    expect(unconfirmed.length).toBeGreaterThan(0);
+    expect(financial.length).toBeGreaterThan(0);
+    expect(
+      approved.every(
+        (review) =>
+          review.connectorTrust.status === "verified" &&
+          !review.connectorTrust.metadataChangedSinceReview &&
+          review.connectorTrust.invocationPreflight.consentStatus === "confirmed"
+      )
+    ).toBe(true);
+    expect(unconfirmed.every((review) => review.connectorTrust.invocationPreflight.egressReview.decision !== "approved-minimized")).toBe(true);
+    expect(financial.every((review) => review.connectorTrust.invocationPreflight.egressReview.decision === "blocked")).toBe(true);
+  });
+
   it("blocks or quarantines unresolved connector content before tool use", () => {
     const unresolvedReviews = workspaceAccessReviews.filter((review) => review.connectorTrust.status !== "verified");
 

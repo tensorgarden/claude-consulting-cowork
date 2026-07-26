@@ -287,6 +287,9 @@ export default function Home() {
                     <p className="mt-2 border-t border-violet-300/20 pt-2 text-violet-100">
                       <span className="font-semibold text-white">Invocation preflight:</span> {scope.connectorTrust.invocationPreflight.requestedOperation} · Inputs shown: {scope.connectorTrust.invocationPreflight.displayedInputs.join(" · ")} · Consent: {scope.connectorTrust.invocationPreflight.consentStatus}{scope.connectorTrust.invocationPreflight.consentTicket ? ` via ${scope.connectorTrust.invocationPreflight.consentTicket}` : ""}.
                     </p>
+                    <p className="mt-2 text-violet-100">
+                      <span className="font-semibold text-white">Data egress:</span> {scope.connectorTrust.invocationPreflight.egressReview.destination} · {scope.connectorTrust.invocationPreflight.egressReview.dataClassification} · {scope.connectorTrust.invocationPreflight.egressReview.decision.replaceAll("-", " ")}. Approved fields: {scope.connectorTrust.invocationPreflight.egressReview.approvedFields.join(", ")}. Redacted: {scope.connectorTrust.invocationPreflight.egressReview.redactedFields.join(", ")}.
+                    </p>
                   </div>
                   <p className="mt-4 text-xs leading-5 text-slate-400">Allowed drafting: {scope.allowedActions.join(" · ")}</p>
                 </div>

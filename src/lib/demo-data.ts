@@ -254,7 +254,14 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
         requestedOperation: "Read JobTread change-order source packet",
         displayedInputs: ["scopeChangeId=CO-214", "mode=read-only"],
         consentStatus: "confirmed",
-        consentTicket: "JT-READ-214-CONSENT"
+        consentTicket: "JT-READ-214-CONSENT",
+        egressReview: {
+          destination: "JobTread tenant: shoreline-renovation",
+          dataClassification: "operational",
+          approvedFields: ["scopeChangeId", "mode"],
+          redactedFields: ["client contact details", "site access codes"],
+          decision: "approved-minimized"
+        }
       }
     },
     allowedActions: ["Draft change-order margin memo", "Summarize source-cost deltas"],
@@ -282,7 +289,14 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
         requestedOperation: "Classify QuickBooks bill anomalies",
         displayedInputs: ["workspace=copper-canyon", "mode=read-only"],
         consentStatus: "blocked",
-        consentTicket: null
+        consentTicket: null,
+        egressReview: {
+          destination: "QuickBooks sandbox: copper-canyon",
+          dataClassification: "financial",
+          approvedFields: ["workspace", "mode"],
+          redactedFields: ["vendor bank account", "tax identifier"],
+          decision: "blocked"
+        }
       }
     },
     allowedActions: ["Classify bill anomalies", "Prepare reconciliation checklist"],
@@ -310,7 +324,14 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
         requestedOperation: "Read Airtable dispatch source packet",
         displayedInputs: ["workspace=northstar-field", "workOrderWindow=last-24h"],
         consentStatus: "required",
-        consentTicket: null
+        consentTicket: null,
+        egressReview: {
+          destination: "Airtable base: northstar-field dispatch",
+          dataClassification: "confidential",
+          approvedFields: ["workspace", "workOrderWindow"],
+          redactedFields: ["technician personal phone", "customer gate code"],
+          decision: "review-required"
+        }
       }
     },
     allowedActions: ["Draft dispatch summary", "Prepare supervisor review note"],

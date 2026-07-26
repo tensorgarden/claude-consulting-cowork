@@ -59,12 +59,23 @@ export type ConnectorTrustStatus = "verified" | "needs-review" | "blocked";
 export type UntrustedContentAction = "quarantine-and-review" | "block-connector";
 export type MetadataChangeResponse = "continue-monitoring" | "block-until-reapproved";
 export type ToolInvocationConsent = "confirmed" | "required" | "blocked";
+export type ToolDataClassification = "operational" | "confidential" | "financial";
+export type ToolEgressDecision = "approved-minimized" | "review-required" | "blocked";
+
+export interface ToolEgressReview {
+  destination: string;
+  dataClassification: ToolDataClassification;
+  approvedFields: string[];
+  redactedFields: string[];
+  decision: ToolEgressDecision;
+}
 
 export interface ToolInvocationPreflight {
   requestedOperation: string;
   displayedInputs: string[];
   consentStatus: ToolInvocationConsent;
   consentTicket: string | null;
+  egressReview: ToolEgressReview;
 }
 
 export interface ConnectorTrustReview {
