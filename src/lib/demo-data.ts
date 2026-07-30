@@ -257,6 +257,9 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
         consentTicket: "JT-READ-214-CONSENT",
         egressReview: {
           destination: "JobTread tenant: shoreline-renovation",
+          destinationOwner: "Shoreline Renovation IT",
+          approvedEndpoint: "api.jobtread.com/shoreline-renovation",
+          destinationVerification: "verified",
           dataClassification: "operational",
           approvedFields: ["scopeChangeId", "mode"],
           redactedFields: ["client contact details", "site access codes"],
@@ -292,6 +295,9 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
         consentTicket: null,
         egressReview: {
           destination: "QuickBooks sandbox: copper-canyon",
+          destinationOwner: "Copper Canyon Accounting",
+          approvedEndpoint: "sandbox-quickbooks.api.intuit.com/copper-canyon",
+          destinationVerification: "blocked",
           dataClassification: "financial",
           approvedFields: ["workspace", "mode"],
           redactedFields: ["vendor bank account", "tax identifier"],
@@ -327,6 +333,9 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
         consentTicket: null,
         egressReview: {
           destination: "Airtable base: northstar-field dispatch",
+          destinationOwner: "Northstar Field Operations",
+          approvedEndpoint: "api.airtable.com/northstar-dispatch",
+          destinationVerification: "needs-review",
           dataClassification: "confidential",
           approvedFields: ["workspace", "workOrderWindow"],
           redactedFields: ["technician personal phone", "customer gate code"],

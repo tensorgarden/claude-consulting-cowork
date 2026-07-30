@@ -61,9 +61,13 @@ export type MetadataChangeResponse = "continue-monitoring" | "block-until-reappr
 export type ToolInvocationConsent = "confirmed" | "required" | "blocked";
 export type ToolDataClassification = "operational" | "confidential" | "financial";
 export type ToolEgressDecision = "approved-minimized" | "review-required" | "blocked";
+export type DestinationVerification = "verified" | "needs-review" | "blocked";
 
 export interface ToolEgressReview {
   destination: string;
+  destinationOwner: string;
+  approvedEndpoint: string;
+  destinationVerification: DestinationVerification;
   dataClassification: ToolDataClassification;
   approvedFields: string[];
   redactedFields: string[];

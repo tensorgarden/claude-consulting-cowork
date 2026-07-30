@@ -234,6 +234,26 @@ describe("workspace access reviews", () => {
     }
   });
 
+  it("requires named, verified destinations before minimized egress approval", () => {
+    const approved = workspaceAccessReviews.filter(
+      (review) => review.connectorTrust.invocationPreflight.egressReview.decision === "approved-minimized"
+    );
+    const unresolvedDestinations = workspaceAccessReviews.filter(
+      (review) => review.connectorTrust.invocationPreflight.egressReview.destinationVerification !== "verified"
+    );
+
+    expect(approved.length).toBeGreaterThan(0);
+    expect(unresolvedDestinations.length).toBeGreaterThan(0);
+    expect(
+      workspaceAccessReviews.every((review) => {
+        const egress = review.connectorTrust.invocationPreflight.egressReview;
+        return egress.destinationOwner.length > 8 && egress.approvedEndpoint.includes(".");
+      })
+    ).toBe(true);
+    expect(approved.every((review) => review.connectorTrust.invocationPreflight.egressReview.destinationVerification === "verified")).toBe(true);
+    expect(unresolvedDestinations.every((review) => review.connectorTrust.invocationPreflight.egressReview.decision !== "approved-minimized")).toBe(true);
+  });
+
   it("blocks sensitive or unconfirmed egress from being treated as approved", () => {
     const approved = workspaceAccessReviews.filter(
       (review) => review.connectorTrust.invocationPreflight.egressReview.decision === "approved-minimized"
