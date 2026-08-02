@@ -264,6 +264,13 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
           approvedFields: ["scopeChangeId", "mode"],
           redactedFields: ["client contact details", "site access codes"],
           decision: "approved-minimized"
+        },
+        auditEvidence: {
+          requestId: "mcp-req-jt-214-01",
+          actor: "Marcus Lee",
+          loggedAt: "2026-07-30T14:05:00Z",
+          outcome: "completed",
+          evidenceReference: "audit://jobtread/mcp-req-jt-214-01"
         }
       }
     },
@@ -302,6 +309,13 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
           approvedFields: ["workspace", "mode"],
           redactedFields: ["vendor bank account", "tax identifier"],
           decision: "blocked"
+        },
+        auditEvidence: {
+          requestId: "mcp-req-qbo-442-02",
+          actor: "Ava Mitchell",
+          loggedAt: "2026-07-30T15:18:00Z",
+          outcome: "denied",
+          evidenceReference: "audit://quickbooks/mcp-req-qbo-442-02"
         }
       }
     },
@@ -340,6 +354,13 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
           approvedFields: ["workspace", "workOrderWindow"],
           redactedFields: ["technician personal phone", "customer gate code"],
           decision: "review-required"
+        },
+        auditEvidence: {
+          requestId: "mcp-req-air-903-03",
+          actor: "Priya Rao",
+          loggedAt: "2026-07-30T16:42:00Z",
+          outcome: "held-for-review",
+          evidenceReference: "audit://airtable/mcp-req-air-903-03"
         }
       }
     },

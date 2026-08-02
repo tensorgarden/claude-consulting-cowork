@@ -280,6 +280,27 @@ describe("workspace access reviews", () => {
     expect(financial.every((review) => review.connectorTrust.invocationPreflight.egressReview.decision === "blocked")).toBe(true);
   });
 
+  it("keeps durable audit evidence for every MCP invocation decision", () => {
+    const auditEvents = workspaceAccessReviews.map(
+      (review) => review.connectorTrust.invocationPreflight.auditEvidence
+    );
+
+    expect(new Set(auditEvents.map((event) => event.requestId)).size).toBe(auditEvents.length);
+    expect(auditEvents.every((event) => event.actor.length > 3)).toBe(true);
+    expect(auditEvents.every((event) => !Number.isNaN(Date.parse(event.loggedAt)))).toBe(true);
+    expect(auditEvents.every((event) => event.evidenceReference.includes(event.requestId))).toBe(true);
+  });
+
+  it("records denied or held outcomes when consent or egress is unresolved", () => {
+    const unresolved = workspaceAccessReviews.filter((review) => {
+      const preflight = review.connectorTrust.invocationPreflight;
+      return preflight.consentStatus !== "confirmed" || preflight.egressReview.decision !== "approved-minimized";
+    });
+
+    expect(unresolved.length).toBeGreaterThan(0);
+    expect(unresolved.every((review) => review.connectorTrust.invocationPreflight.auditEvidence.outcome !== "completed")).toBe(true);
+  });
+
   it("blocks or quarantines unresolved connector content before tool use", () => {
     const unresolvedReviews = workspaceAccessReviews.filter((review) => review.connectorTrust.status !== "verified");
 

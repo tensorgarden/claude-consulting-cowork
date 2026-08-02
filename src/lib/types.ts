@@ -74,12 +74,23 @@ export interface ToolEgressReview {
   decision: ToolEgressDecision;
 }
 
+export type ToolInvocationOutcome = "completed" | "denied" | "held-for-review";
+
+export interface ToolInvocationAuditEvidence {
+  requestId: string;
+  actor: string;
+  loggedAt: string;
+  outcome: ToolInvocationOutcome;
+  evidenceReference: string;
+}
+
 export interface ToolInvocationPreflight {
   requestedOperation: string;
   displayedInputs: string[];
   consentStatus: ToolInvocationConsent;
   consentTicket: string | null;
   egressReview: ToolEgressReview;
+  auditEvidence: ToolInvocationAuditEvidence;
 }
 
 export interface ConnectorTrustReview {

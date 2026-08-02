@@ -290,6 +290,9 @@ export default function Home() {
                     <p className="mt-2 text-violet-100">
                       <span className="font-semibold text-white">Data egress:</span> {scope.connectorTrust.invocationPreflight.egressReview.destination} · Owner: {scope.connectorTrust.invocationPreflight.egressReview.destinationOwner} · Endpoint: {scope.connectorTrust.invocationPreflight.egressReview.approvedEndpoint} ({scope.connectorTrust.invocationPreflight.egressReview.destinationVerification.replace("-", " ")}) · {scope.connectorTrust.invocationPreflight.egressReview.dataClassification} · {scope.connectorTrust.invocationPreflight.egressReview.decision.replaceAll("-", " ")}. Approved fields: {scope.connectorTrust.invocationPreflight.egressReview.approvedFields.join(", ")}. Redacted: {scope.connectorTrust.invocationPreflight.egressReview.redactedFields.join(", ")}.
                     </p>
+                    <p className="mt-2 border-t border-violet-300/20 pt-2 text-violet-100">
+                      <span className="font-semibold text-white">Invocation audit:</span> {scope.connectorTrust.invocationPreflight.auditEvidence.requestId} · {scope.connectorTrust.invocationPreflight.auditEvidence.outcome.replaceAll("-", " ")} · Actor: {scope.connectorTrust.invocationPreflight.auditEvidence.actor} · Evidence: {scope.connectorTrust.invocationPreflight.auditEvidence.evidenceReference}.
+                    </p>
                   </div>
                   <p className="mt-4 text-xs leading-5 text-slate-400">Allowed drafting: {scope.allowedActions.join(" · ")}</p>
                 </div>
