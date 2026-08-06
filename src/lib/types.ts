@@ -76,12 +76,22 @@ export interface ToolEgressReview {
 
 export type ToolInvocationOutcome = "completed" | "denied" | "held-for-review";
 
+export type AuditReviewFollowUp = "none-required" | "escalated-to-owner" | "incident-opened";
+
+export interface ToolInvocationAuditReview {
+  reviewer: string;
+  reviewedHoursAgo: number;
+  followUp: AuditReviewFollowUp;
+  note: string;
+}
+
 export interface ToolInvocationAuditEvidence {
   requestId: string;
   actor: string;
   loggedAt: string;
   outcome: ToolInvocationOutcome;
   evidenceReference: string;
+  auditReview: ToolInvocationAuditReview;
 }
 
 export interface ToolInvocationPreflight {

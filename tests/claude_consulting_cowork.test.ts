@@ -316,6 +316,30 @@ describe("workspace access reviews", () => {
       )
     ).toBe(true);
   });
+
+  it("requires a named second reviewer for every MCP invocation audit", () => {
+    const auditEvents = workspaceAccessReviews.map(
+      (review) => review.connectorTrust.invocationPreflight.auditEvidence
+    );
+
+    expect(auditEvents.every((event) => event.auditReview.reviewer.length > 3)).toBe(true);
+    expect(auditEvents.every((event) => event.auditReview.reviewer !== event.actor)).toBe(true);
+    expect(auditEvents.every((event) => event.auditReview.reviewedHoursAgo <= 72)).toBe(true);
+  });
+
+  it("escalates denied or held invocation outcomes instead of closing the log", () => {
+    const auditEvents = workspaceAccessReviews.map(
+      (review) => review.connectorTrust.invocationPreflight.auditEvidence
+    );
+    const unresolved = auditEvents.filter((event) => event.outcome !== "completed");
+    const completed = auditEvents.filter((event) => event.outcome === "completed");
+
+    expect(unresolved.length).toBeGreaterThan(0);
+    expect(completed.length).toBeGreaterThan(0);
+    expect(unresolved.every((event) => event.auditReview.followUp !== "none-required")).toBe(true);
+    expect(completed.every((event) => event.auditReview.followUp === "none-required")).toBe(true);
+    expect(auditEvents.every((event) => event.auditReview.note.length > 20)).toBe(true);
+  });
 });
 
 describe("readiness gates", () => {

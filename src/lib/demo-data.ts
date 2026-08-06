@@ -270,7 +270,13 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
           actor: "Marcus Lee",
           loggedAt: "2026-07-30T14:05:00Z",
           outcome: "completed",
-          evidenceReference: "audit://jobtread/mcp-req-jt-214-01"
+          evidenceReference: "audit://jobtread/mcp-req-jt-214-01",
+          auditReview: {
+            reviewer: "Renee Foster",
+            reviewedHoursAgo: 3,
+            followUp: "none-required",
+            note: "Ops review confirmed the completed read matched the approved JobTread consent ticket."
+          }
         }
       }
     },
@@ -315,7 +321,13 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
           actor: "Ava Mitchell",
           loggedAt: "2026-07-30T15:18:00Z",
           outcome: "denied",
-          evidenceReference: "audit://quickbooks/mcp-req-qbo-442-02"
+          evidenceReference: "audit://quickbooks/mcp-req-qbo-442-02",
+          auditReview: {
+            reviewer: "Jordan Hale",
+            reviewedHoursAgo: 1,
+            followUp: "incident-opened",
+            note: "Denied financial egress opened an incident review with Copper Canyon Accounting."
+          }
         }
       }
     },
@@ -360,7 +372,13 @@ export const workspaceAccessReviews: WorkspaceAccessReview[] = [
           actor: "Priya Rao",
           loggedAt: "2026-07-30T16:42:00Z",
           outcome: "held-for-review",
-          evidenceReference: "audit://airtable/mcp-req-air-903-03"
+          evidenceReference: "audit://airtable/mcp-req-air-903-03",
+          auditReview: {
+            reviewer: "Sam Whitfield",
+            reviewedHoursAgo: 5,
+            followUp: "escalated-to-owner",
+            note: "Held dispatch read was escalated to Priya Rao for destination verification."
+          }
         }
       }
     },
